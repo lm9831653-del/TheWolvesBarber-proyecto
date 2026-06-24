@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wolves Barber — Iniciar Sesión</title>
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-card">
+    <img src="images/logo.jpg" alt="The Wolves Barber" class="auth-logo">
+    <div class="auth-brand">THE WOLVES BARBER</div>
+    <div style="height:0.75rem"></div>
+    <h2 class="auth-title">INICIAR SESIÓN</h2>
+    <div class="auth-error" id="login-error"></div>
+    <form class="auth-form" id="login-form" onsubmit="return false">
+      <div>
+        <label>Correo electrónico</label>
+        <input type="email" id="login-email" placeholder="correo@ejemplo.com" required>
+      </div>
+      <div>
+        <label>Contraseña</label>
+        <div class="auth-pass-wrap">
+          <input type="password" id="login-pass" placeholder="Ingresar Contraseña" required>
+          <button type="button" class="auth-eye" onclick="togglePass('login-pass',this)">👁</button>
+        </div>
+      </div>
+      <button class="auth-btn" type="submit" id="login-btn">INGRESAR</button>
+    </form>
+    <button class="auth-link" onclick="window.location='register.html'">Registrarme</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+const API = 'http://localhost:8000/usuarios/api';
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (getCurrentUser()) { window.location.href = 'index.html'; return; }
+
+  const errEl = document.getElementById('login-error');
+  const btn   = document.getElementById('login-btn');
+
+  function showError(msg) { errEl.textContent = msg; errEl.classList.add('show'); }
+
+  function applyBlock() {
+    btn.disabled = true;
+    btn.textContent = 'BLOQUEADO';
+    document.getElementById('login-email').disabled = true;
+    document.getElementById('login-pass').disabled  = true;
+    showError('🔒 Cuenta bloqueada por demasiados intentos. Contacta al administrador.');
+  }
+
+  window.togglePass = function(id, toggleBtn) {
+    const inp = document.getElementById(id);
+    if (inp.type === 'password') { inp.type = 'text'; toggleBtn.textContent = '🙈'; }
+    else { inp.type = 'password'; toggleBtn.textContent = '👁'; }
+  };
+
+  document.getElementById('login-form').addEventListener('submit', async () => {
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const pass  = document.getElementById('login-pass').value;
+
+    if (!email || !pass) { showError('Por favor completa todos los campos.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+    errEl.classList.remove('show');
+
+    try {
+      const res  = await fetch(`${API}/login/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        sessionStorage.setItem('wolves_session', JSON.stringify({ name: data.name, email: data.email }));
+        window.location.href = 'index.html';
+        return;
+      }
+
+      if (data.blocked) { applyBlock(); return; }
+
+      showError(data.error || 'Correo o contraseña incorrectos.');
+      btn.disabled = false;
+      btn.textContent = 'INGRESAR';
+
+    } catch (e) {
+      showError('No se pudo conectar con el servidor. Asegúrate de que el backend esté corriendo (ver INSTRUCCIONES.txt).');
+      btn.disabled = false;
+      btn.textContent = 'INGRESAR';
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends 'usuarios/base.html' %}
+
+{% block contenido %}
+<h1>Iniciar sesion</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        <label for="username">Usuario o correo</label>
+        <input type="text" id="username" name="username" required>
+    </p>
+
+    <p>
+        <label for="password">Contrasena</label>
+        <input type="password" id="password" name="password" required>
+    </p>
+
+    <button type="submit">Entrar</button>
+</form>
+
+<p>
+    No tienes cuenta?
+    <a href="{% url 'registro' %}">Registrate</a>
+</p>
+{% endblock %}

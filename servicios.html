@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wolves Barber — Servicios</title>
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+<style>
+.tabs{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.tab-btn{padding:0.55rem 1.4rem;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,0.25);border-radius:50px;background:none;color:var(--text-muted);cursor:pointer;transition:all .2s}
+.tab-btn:hover,.tab-btn.active{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.srv-card{background:var(--surface);border:1px solid rgba(201,168,76,0.1);border-radius:8px;overflow:hidden;transition:border-color .3s,transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.srv-card:hover{border-color:rgba(201,168,76,0.4);transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,0,0,0.4)}
+.srv-card img{width:100%;height:220px;object-fit:cover;filter:brightness(.85);transition:filter .3s}
+.srv-card:hover img{filter:brightness(1)}
+.srv-card-body{padding:1.5rem;flex:1;display:flex;flex-direction:column}
+.srv-card-cat{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.srv-card-name{font-family:'Playfair Display',serif;font-size:1.25rem;margin-bottom:0.6rem}
+.srv-card-desc{font-size:0.85rem;color:var(--text-muted);line-height:1.6;flex:1;margin-bottom:1.25rem}
+.srv-card-footer{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.srv-card-price{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-weight:700}
+.srv-card-dur{font-size:0.78rem;color:var(--text-dim);background:var(--surface2);padding:.3rem .7rem;border-radius:50px}
+.srv-card-btn{display:block;text-align:center;padding:.65rem 1rem;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:4px;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);transition:all .2s;cursor:pointer;text-decoration:none}
+.srv-card-btn:hover{background:var(--gold);color:var(--bg)}
+@media(max-width:768px){.srv-grid{grid-template-columns:1fr}}
+@media(min-width:769px) and (max-width:1024px){.srv-grid{grid-template-columns:1fr 1fr}}
+
+/* Animaciones extra servicios */
+.srv-tab-pane { animation: fadeInUp .5s ease both; }
+.srv-cat-title { animation: slideDown .6s ease both; }
+.filter-btn { transition: all .25s cubic-bezier(.34,1.56,.64,1); }
+.filter-btn.active { transform: scale(1.05); }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="images/logo.jpg" alt="Logo">
+    <span>THE WOLVES <em>BARBER</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html"      data-page="index">Inicio</a></li>
+    <li><a href="servicios.html"  data-page="servicios" class="active">Servicios</a></li>
+    <li><a href="reservas.html"   data-page="reservas">Reservas</a></li>
+    <li><a href="galeria.html"    data-page="galeria">Galería</a></li>
+    <li><a href="resenas.html"    data-page="resenas">Reseñas</a></li>
+    <li><a href="nosotros.html"   data-page="nosotros">Nosotros</a></li>
+  </ul>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+  <button class="btn btn-outline btn-sm" id="logout-btn" style="display:none;margin-left:0.75rem;font-size:0.72rem">Cerrar Sesión</button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<nav class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Inicio</a>
+  <a href="servicios.html" class="active">Servicios</a>
+  <a href="reservas.html">Reservas</a>
+  <a href="galeria.html">Galería</a>
+  <a href="resenas.html">Reseñas</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+</nav>
+
+<main>
+  <div class="page-banner">
+    <span class="section-tag">Lo que ofrecemos</span>
+    <h1>Nuestros <span class="shimmer-title">Servicios</span></h1>
+    <p>14 servicios de barbería premium. Elige tu estilo, elige tu precio.</p>
+  </div>
+
+  <section style="padding:4rem 2rem 6rem;max-width:1200px;margin:0 auto">
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" data-cat="Todos">Todos</button>
+      <button class="tab-btn" data-cat="Cortes">Cortes</button>
+      <button class="tab-btn" data-cat="Barba">Barba</button>
+      <button class="tab-btn" data-cat="Combos">Combos</button>
+      <button class="tab-btn" data-cat="Especiales">Especiales</button>
+    </div>
+    <div class="srv-grid" id="srv-grid"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="images/logo.jpg" alt="Logo">
+      <h3>The Wolves Barber</h3>
+      <p>El santuario de la masculinidad en Bogotá.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <p>📍 Bogotá, Colombia<br>📱 <a href="https://wa.me/573227418794" style="color:var(--gold)">+57 322 741 8794</a><br>🕒 L–S: 9am–8pm | Dom: 10am–5pm</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 <span>The Wolves Barber</span>. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<button id="chat-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+<div id="chat-panel">
+  <div class="chat-header"><div class="chat-header-avatar">🐺</div><div class="chat-header-info"><h4>Soporte Wolves</h4><p>Asistente disponible 24/7</p></div><button class="chat-close" id="chat-close">&times;</button></div>
+  <div id="chat-messages"><div class="chat-msg bot">¡Hola! ¿Tienes dudas sobre algún servicio o precio?</div></div>
+  <div class="chat-quick">
+    <button class="chat-quick-btn">¿Cuáles son los precios?</button>
+    <button class="chat-quick-btn">¿Cómo reservo?</button>
+    <button class="chat-quick-btn">Contactar administrador</button>
+  </div>
+  <div class="chat-input-area"><input type="text" id="chat-input" placeholder="Escribe tu pregunta..."><button class="chat-send" id="chat-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+</div>
+<div id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  requireAuth();
+  const grid = document.getElementById('srv-grid');
+  const tabs = document.querySelectorAll('.tab-btn');
+
+  function renderCards(cat) {
+    const list = cat === 'Todos' ? SERVICES : SERVICES.filter(s => s.cat === cat);
+    grid.innerHTML = list.map(s => `
+      <div class="srv-card reveal">
+        <img src="${s.img}" alt="${s.name}">
+        <div class="srv-card-body">
+          <div class="srv-card-cat">${s.cat}</div>
+          <h3 class="srv-card-name">${s.name}</h3>
+          <p class="srv-card-desc">${s.desc}</p>
+          <div class="srv-card-footer">
+            <span class="srv-card-price">${formatCOP(s.price)}</span>
+            <span class="srv-card-dur">${s.dur} min</span>
+          </div>
+          <a href="reservas.html?service=${s.id}" class="srv-card-btn">Reservar este servicio &rarr;</a>
+        </div>
+      </div>
+    `).join('');
+    initReveal();
+  }
+
+  renderCards('Todos');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCards(btn.dataset.cat);
+    });
+  });
+});
+</script>
+</body>
+</html>

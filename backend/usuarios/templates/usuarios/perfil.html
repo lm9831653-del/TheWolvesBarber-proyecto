@@ -1,0 +1,18 @@
+{% extends 'usuarios/base.html' %}
+
+{% block contenido %}
+<h1>Mi perfil</h1>
+
+<p><strong>Usuario:</strong> {{ request.user.username }}</p>
+<p><strong>Nombre:</strong> {{ request.user.first_name }}</p>
+<p><strong>Apellido:</strong> {{ request.user.last_name }}</p>
+<p><strong>Correo:</strong> {{ request.user.email }}</p>
+
+{% if perfil %}
+    <p><strong>Telefono:</strong> {{ perfil.telefono }}</p>
+    <p><strong>Rol:</strong> {{ perfil.get_rol_display }}</p>
+    <p><strong>Intentos fallidos:</strong> {{ perfil.intentos_fallidos }}</p>
+{% endif %}
+
+<a href="{% url 'logout' %}">Cerrar sesion</a>
+{% endblock %}

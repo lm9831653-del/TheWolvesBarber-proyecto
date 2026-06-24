@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wolves Barber — Registrarse</title>
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-card auth-card--wide">
+    <img src="images/logo.jpg" alt="The Wolves Barber" class="auth-logo">
+    <div class="auth-brand">THE WOLVES BARBER</div>
+    <h2 class="auth-title">CREAR CUENTA</h2>
+    <div class="auth-error" id="reg-error"></div>
+
+    <form class="auth-form" id="reg-form" onsubmit="return false">
+
+      <div class="auth-row">
+        <div>
+          <label>Nombre</label>
+          <input type="text" id="reg-name" placeholder="Ej: Carlos" required>
+        </div>
+        <div>
+          <label>Apellido</label>
+          <input type="text" id="reg-lastname" placeholder="Ej: Rodríguez" required>
+        </div>
+      </div>
+
+      <div>
+        <label>Correo electrónico</label>
+        <input type="email" id="reg-email" placeholder="correo@ejemplo.com" required>
+      </div>
+
+      <div class="auth-row">
+        <div>
+          <label>Celular</label>
+          <input type="tel" id="reg-phone" placeholder="Ej: 3001234567" required>
+        </div>
+        <div>
+          <label>Género</label>
+          <select id="reg-gender" required>
+            <option value="" disabled selected>Seleccionar</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+            <option value="prefiero-no-decir">Prefiero no decir</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label>Contraseña</label>
+        <div class="auth-pass-wrap">
+          <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" required>
+          <button type="button" class="auth-eye" onclick="togglePass('reg-pass',this)">👁</button>
+        </div>
+      </div>
+
+      <div>
+        <label>Confirmar contraseña</label>
+        <div class="auth-pass-wrap">
+          <input type="password" id="reg-pass2" placeholder="Repite tu contraseña" required>
+          <button type="button" class="auth-eye" onclick="togglePass('reg-pass2',this)">👁</button>
+        </div>
+      </div>
+
+      <div class="auth-check-row">
+        <input type="checkbox" id="reg-terms" required>
+        <label for="reg-terms" style="text-transform:none;font-size:0.8rem;color:var(--text-muted)">
+          Acepto los <span style="color:var(--gold);cursor:pointer">términos y condiciones</span> del servicio
+        </label>
+      </div>
+
+      <button class="auth-btn" type="submit" id="reg-btn">REGISTRARSE</button>
+    </form>
+
+    <button class="auth-link" onclick="window.location='login.html'">¿Ya tienes cuenta? Inicia sesión</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+const API = 'http://localhost:8000/usuarios/api';
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (getCurrentUser()) { window.location.href = 'index.html'; return; }
+
+  const errEl = document.getElementById('reg-error');
+  const btn   = document.getElementById('reg-btn');
+
+  function showError(msg) { errEl.textContent = msg; errEl.classList.add('show'); }
+
+  window.togglePass = function(id, toggleBtn) {
+    const inp = document.getElementById(id);
+    if (inp.type === 'password') { inp.type = 'text'; toggleBtn.textContent = '🙈'; }
+    else { inp.type = 'password'; toggleBtn.textContent = '👁'; }
+  };
+
+  document.getElementById('reg-form').addEventListener('submit', async () => {
+    const nombre   = document.getElementById('reg-name').value.trim();
+    const apellido = document.getElementById('reg-lastname').value.trim();
+    const email    = document.getElementById('reg-email').value.trim().toLowerCase();
+    const telefono = document.getElementById('reg-phone').value.trim();
+    const genero   = document.getElementById('reg-gender').value;
+    const pass     = document.getElementById('reg-pass').value;
+    const pass2    = document.getElementById('reg-pass2').value;
+    const terms    = document.getElementById('reg-terms').checked;
+
+    if (!nombre || !apellido || !email || !telefono || !genero || !pass || !pass2) {
+      return showError('Por favor completa todos los campos.');
+    }
+    if (pass.length < 6) return showError('La contraseña debe tener mínimo 6 caracteres.');
+    if (pass !== pass2)  return showError('Las contraseñas no coinciden.');
+    if (!terms)          return showError('Debes aceptar los términos y condiciones.');
+
+    btn.disabled = true;
+    btn.textContent = 'Registrando...';
+    errEl.classList.remove('show');
+
+    try {
+      const res  = await fetch(`${API}/registro/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, apellido, email, telefono, genero, password: pass })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        sessionStorage.setItem('wolves_session', JSON.stringify({ name: data.name, email: data.email }));
+        window.location.href = 'index.html';
+        return;
+      }
+
+      showError(data.error || 'Error al registrar. Intenta de nuevo.');
+      btn.disabled = false;
+      btn.textContent = 'REGISTRARSE';
+
+    } catch (e) {
+      showError('No se pudo conectar con el servidor. Asegúrate de que el backend esté corriendo (ver INSTRUCCIONES.txt).');
+      btn.disabled = false;
+      btn.textContent = 'REGISTRARSE';
+    }
+  });
+});
+</script>
+</body>
+</html>

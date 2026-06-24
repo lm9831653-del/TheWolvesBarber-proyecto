@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wolves Barber — Reservas</title>
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+<style>
+.booking-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:1100px;margin:0 auto;padding:4rem 2rem 6rem}
+.booking-form-card{background:var(--surface);border:1px solid var(--gold-border);border-radius:8px;padding:2.5rem}
+.booking-form-card h2{font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:2rem}
+.booking-form-card h2 span{color:var(--gold)}
+.service-preview{background:var(--surface2);border:1px solid var(--gold-border);border-radius:6px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:none}
+.service-preview.show{display:flex;align-items:center;gap:1rem}
+.service-preview img{width:60px;height:60px;object-fit:cover;border-radius:4px;flex-shrink:0}
+.service-preview-info h4{font-size:0.9rem;font-family:'Playfair Display',serif;margin-bottom:0.2rem}
+.service-preview-info p{font-size:0.78rem;color:var(--text-muted)}
+.service-preview-price{margin-left:auto;font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold);font-weight:700;flex-shrink:0}
+.barbers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-bottom:1.25rem}
+.barber-card{border:1px solid rgba(201,168,76,0.2);border-radius:6px;padding:1rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface2)}
+.barber-card:hover,.barber-card.selected{border-color:var(--gold);background:var(--gold-dim)}
+.barber-card.selected .barber-name{color:var(--gold)}
+.barber-avatar{font-size:1.8rem;margin-bottom:0.4rem}
+.barber-name{font-size:0.82rem;font-weight:600;color:var(--text)}
+.barber-spec{font-size:0.7rem;color:var(--text-dim);margin-top:0.2rem;line-height:1.3}
+.confirm-card{background:var(--surface);border:1px solid var(--gold-border);border-radius:8px;padding:3rem 2rem;text-align:center;display:none}
+.confirm-card.show{display:block}
+.confirm-ticket{width:120px;height:120px;border-radius:50%;background:var(--gold-dim);border:2px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 2rem}
+.confirm-ticket-num{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold);font-weight:700;line-height:1}
+.confirm-ticket-label{font-size:0.65rem;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase}
+.confirm-card h3{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:0.5rem}
+.confirm-card h3 span{color:var(--gold)}
+.confirm-detail{color:var(--text-muted);font-size:0.9rem;margin:0.3rem 0}
+.my-appts-card{background:var(--surface);border:1px solid var(--gold-border);border-radius:8px;padding:2rem}
+.my-appts-card h2{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem}
+.my-appts-card h2 span{color:var(--gold)}
+.appt-item{background:var(--surface2);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:1.25rem;margin-bottom:0.75rem}
+.appt-item-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem}
+.appt-item-name{font-family:'Playfair Display',serif;font-size:1rem}
+.appt-ticket{font-size:0.72rem;background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);padding:.2rem .6rem;border-radius:50px}
+.appt-item-details{font-size:0.82rem;color:var(--text-muted)}
+.appt-item-meta{display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem}
+.appt-price{color:var(--gold);font-weight:600;font-size:0.9rem}
+.appt-cancel{font-size:0.72rem;color:var(--text-dim);background:none;border:none;cursor:pointer;text-decoration:underline}
+.appt-cancel:hover{color:var(--red)}
+.empty-state{text-align:center;color:var(--text-dim);padding:2rem;font-size:0.9rem}
+@media(max-width:900px){.booking-layout{grid-template-columns:1fr}.barbers-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.barbers-grid{grid-template-columns:1fr 1fr}}
+
+/* Animaciones extra reservas */
+.barber-card { transition: all .3s cubic-bezier(.34,1.56,.64,1); }
+.barber-card:hover { transform: translateY(-6px) scale(1.03); }
+.barber-card.selected { transform: scale(1.04); }
+.barber-avatar { font-size: 1.8rem; transition: transform .3s; display: inline-block; }
+.barber-card:hover .barber-avatar { transform: rotate(-5deg) scale(1.2); }
+.appt-item { animation: fadeInUp .4s ease both; }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="images/logo.jpg" alt="Logo">
+    <span>THE WOLVES <em>BARBER</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="servicios.html">Servicios</a></li>
+    <li><a href="reservas.html" data-page="reservas" class="active">Reservas</a></li>
+    <li><a href="galeria.html">Galería</a></li>
+    <li><a href="resenas.html">Reseñas</a></li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+  </ul>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+  <button class="btn btn-outline btn-sm" id="logout-btn" style="display:none;margin-left:0.75rem;font-size:0.72rem">Cerrar Sesión</button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<nav class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Inicio</a><a href="servicios.html">Servicios</a>
+  <a href="reservas.html" class="active">Reservas</a><a href="galeria.html">Galería</a>
+  <a href="resenas.html">Reseñas</a><a href="nosotros.html">Nosotros</a>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+</nav>
+
+<main>
+  <div class="page-banner">
+    <span class="section-tag">Agenda tu turno</span>
+    <h1>Reservar <span class="shimmer-title">Cita</span></h1>
+    <p>Elige tu servicio, tu barbero y tu horario. Confirmación inmediata.</p>
+  </div>
+
+  <div class="booking-layout">
+    <div>
+      <div id="form-section" class="booking-form-card reveal fade-left visible">
+        <h2>Nueva <span>Reserva</span></h2>
+
+        <div class="service-preview" id="service-preview">
+          <img id="prev-img" src="" alt="">
+          <div class="service-preview-info">
+            <h4 id="prev-name"></h4>
+            <p id="prev-dur"></p>
+          </div>
+          <span class="service-preview-price" id="prev-price"></span>
+        </div>
+
+        <div class="form-group">
+          <label>Servicio</label>
+          <select id="service-sel">
+            <option value="">— Selecciona un servicio —</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Elige tu Barbero</label>
+          <div class="barbers-grid" id="barbers-grid">
+            <div class="barber-card" data-barber="Leonardo Márquez">
+              <div class="barber-avatar">🐺</div>
+              <div class="barber-name">Leonardo Márquez</div>
+              <div class="barber-spec">Fades y Degradados</div>
+            </div>
+            <div class="barber-card" data-barber="Albeiro Quiroga">
+              <div class="barber-avatar">🌑</div>
+              <div class="barber-name">Albeiro Quiroga</div>
+              <div class="barber-spec">Clásicos y Barba</div>
+            </div>
+            <div class="barber-card" data-barber="Johan Rivera">
+              <div class="barber-avatar">⚔️</div>
+              <div class="barber-name">Johan Rivera</div>
+              <div class="barber-spec">Diseños y Texturizado</div>
+            </div>
+            <div class="barber-card" data-barber="Carlos Penagos">
+              <div class="barber-avatar">💈</div>
+              <div class="barber-name">Carlos Penagos</div>
+              <div class="barber-spec">Cortes Modernos</div>
+            </div>
+          </div>
+          <input type="hidden" id="barber-input">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" id="client-name" placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" id="client-phone" placeholder="+57 300 000 0000">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Correo (opcional)</label>
+          <input type="email" id="client-email" placeholder="tucorreo@email.com">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fecha</label>
+            <input type="date" id="appt-date">
+          </div>
+          <div class="form-group">
+            <label>Hora</label>
+            <select id="appt-time">
+              <option value="">— Selecciona hora —</option>
+              <option>09:00</option><option>09:30</option><option>10:00</option>
+              <option>10:30</option><option>11:00</option><option>11:30</option>
+              <option>12:00</option><option>12:30</option><option>13:00</option>
+              <option>13:30</option><option>14:00</option><option>14:30</option>
+              <option>15:00</option><option>15:30</option><option>16:00</option>
+              <option>16:30</option><option>17:00</option><option>17:30</option>
+              <option>18:00</option><option>18:30</option><option>19:00</option>
+              <option>19:30</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Notas adicionales (opcional)</label>
+          <textarea id="appt-notes" rows="2" placeholder="Alguna indicación especial..."></textarea>
+        </div>
+
+        <button class="btn btn-primary" id="book-btn" style="width:100%;justify-content:center;font-size:.9rem;padding:1rem">
+          Confirmar Reserva &rarr;
+        </button>
+      </div>
+
+      <div class="confirm-card" id="confirm-card">
+        <div class="confirm-ticket">
+          <div class="confirm-ticket-num" id="conf-ticket">—</div>
+          <div class="confirm-ticket-label">Ficha del día</div>
+        </div>
+        <h3>¡Reserva <span>Confirmada!</span></h3>
+        <div class="confirm-detail" id="conf-service"></div>
+        <div class="confirm-detail" id="conf-barber"></div>
+        <div class="confirm-detail" id="conf-datetime"></div>
+        <div class="confirm-detail" id="conf-client"></div>
+        <div style="margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="resetForm()">Nueva Reserva</button>
+          <a class="btn btn-primary btn-sm" href="https://wa.me/573227418794" target="_blank">Confirmar por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-appts-card reveal fade-right visible">
+      <h2>Mis <span>Citas</span></h2>
+      <div id="appts-list"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><img src="images/logo.jpg" alt="Logo"><h3>The Wolves Barber</h3><p>El santuario de la masculinidad en Bogotá.</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📍 Bogotá, Colombia<br>📱 <a href="https://wa.me/573227418794" style="color:var(--gold)">+57 322 741 8794</a><br>🕒 L–S: 9am–8pm | Dom: 10am–5pm</p></div>
+  </div>
+  <div class="footer-bottom"><p>© 2024 <span>The Wolves Barber</span>. Todos los derechos reservados.</p></div>
+</footer>
+
+<button id="chat-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+<div id="chat-panel">
+  <div class="chat-header"><div class="chat-header-avatar">🐺</div><div class="chat-header-info"><h4>Soporte Wolves</h4><p>Asistente disponible 24/7</p></div><button class="chat-close" id="chat-close">&times;</button></div>
+  <div id="chat-messages"><div class="chat-msg bot">¡Hola! ¿Necesitas ayuda para elegir tu barbero o servicio?</div></div>
+  <div class="chat-quick"><button class="chat-quick-btn">¿Cuáles son los precios?</button><button class="chat-quick-btn">¿Cómo reservo?</button><button class="chat-quick-btn">Contactar administrador</button></div>
+  <div class="chat-input-area"><input type="text" id="chat-input" placeholder="Escribe tu pregunta..."><button class="chat-send" id="chat-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+</div>
+<div id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+let selectedBarber = '';
+
+document.addEventListener('DOMContentLoaded', () => {
+  requireAuth();
+  const dateInput = document.getElementById('appt-date');
+  dateInput.min = todayStr();
+  dateInput.value = todayStr();
+
+  const sel = document.getElementById('service-sel');
+  SERVICES.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = `${s.name} — ${formatCOP(s.price)} (${s.dur} min)`;
+    sel.appendChild(opt);
+  });
+
+  const params = new URLSearchParams(location.search);
+  const preId = params.get('service');
+  if (preId) { sel.value = preId; updatePreview(parseInt(preId)); }
+
+  sel.addEventListener('change', () => updatePreview(parseInt(sel.value)));
+
+  document.querySelectorAll('.barber-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.barber-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedBarber = card.dataset.barber;
+      document.getElementById('barber-input').value = selectedBarber;
+    });
+  });
+
+  document.getElementById('book-btn').addEventListener('click', bookAppointment);
+  renderAppointments();
+});
+
+function updatePreview(id) {
+  const s = SERVICES.find(x => x.id === id);
+  const prev = document.getElementById('service-preview');
+  if (!s) { prev.classList.remove('show'); return; }
+  prev.classList.add('show');
+  document.getElementById('prev-img').src = s.img;
+  document.getElementById('prev-name').textContent = s.name;
+  document.getElementById('prev-dur').textContent = s.dur + ' min • ' + s.cat;
+  document.getElementById('prev-price').textContent = formatCOP(s.price);
+}
+
+function bookAppointment() {
+  const serviceId = parseInt(document.getElementById('service-sel').value);
+  const name = document.getElementById('client-name').value.trim();
+  const phone = document.getElementById('client-phone').value.trim();
+  const email = document.getElementById('client-email').value.trim();
+  const date = document.getElementById('appt-date').value;
+  const time = document.getElementById('appt-time').value;
+  const notes = document.getElementById('appt-notes').value.trim();
+
+  if (!serviceId) { showToast('Por favor selecciona un servicio', 'error'); return; }
+  if (!selectedBarber) { showToast('Por favor elige un barbero', 'error'); return; }
+  if (!name) { showToast('Por favor ingresa tu nombre', 'error'); return; }
+  if (!phone) { showToast('Por favor ingresa tu teléfono', 'error'); return; }
+  if (!date) { showToast('Por favor selecciona una fecha', 'error'); return; }
+  if (!time) { showToast('Por favor selecciona una hora', 'error'); return; }
+
+  const service = SERVICES.find(s => s.id === serviceId);
+  const appts = getAppointments();
+  const todayAppts = appts.filter(a => a.date === date);
+  const ticketNumber = todayAppts.length + 1;
+
+  const appt = {
+    id: Date.now(),
+    clientName: name, clientPhone: phone, clientEmail: email,
+    serviceId, serviceName: service.name, barber: selectedBarber,
+    date, time, ticketNumber, status: 'pending', notes,
+    price: service.price, createdAt: new Date().toISOString()
+  };
+
+  appts.push(appt);
+  saveAppointments(appts);
+
+  document.getElementById('form-section').style.display = 'none';
+  const conf = document.getElementById('confirm-card');
+  conf.classList.add('show');
+  document.getElementById('conf-ticket').textContent = '#' + ticketNumber;
+  document.getElementById('conf-service').textContent = '✂️ ' + service.name + ' — ' + formatCOP(service.price);
+  document.getElementById('conf-barber').textContent = '👨‍💈 Barbero: ' + selectedBarber;
+  document.getElementById('conf-datetime').textContent = '📅 ' + date + ' a las ' + time;
+  document.getElementById('conf-client').textContent = '👤 ' + name + ' · ' + phone;
+
+  renderAppointments();
+}
+
+function resetForm() {
+  document.getElementById('form-section').style.display = '';
+  document.getElementById('confirm-card').classList.remove('show');
+  document.getElementById('service-sel').value = '';
+  document.getElementById('client-name').value = '';
+  document.getElementById('client-phone').value = '';
+  document.getElementById('client-email').value = '';
+  document.getElementById('appt-notes').value = '';
+  document.getElementById('appt-time').value = '';
+  document.getElementById('service-preview').classList.remove('show');
+  document.querySelectorAll('.barber-card').forEach(c => c.classList.remove('selected'));
+  selectedBarber = '';
+}
+
+function cancelAppointment(id) {
+  const appts = getAppointments().map(a => a.id === id ? {...a, status:'cancelled'} : a);
+  saveAppointments(appts);
+  renderAppointments();
+  showToast('Cita cancelada', 'success');
+}
+window.cancelAppointment = cancelAppointment;
+
+function renderAppointments() {
+  const list = document.getElementById('appts-list');
+  const appts = getAppointments().filter(a => a.status !== 'cancelled').reverse();
+  if (!appts.length) {
+    list.innerHTML = '<div class="empty-state">No tienes citas registradas aún.</div>';
+    return;
+  }
+  list.innerHTML = appts.map(a => `
+    <div class="appt-item">
+      <div class="appt-item-top">
+        <span class="appt-item-name">${a.serviceName}</span>
+        <span class="appt-ticket">Ficha #${a.ticketNumber}</span>
+      </div>
+      <div class="appt-item-details">👨‍💈 ${a.barber} · 📅 ${a.date} ${a.time}</div>
+      <div class="appt-item-details">👤 ${a.clientName}</div>
+      <div class="appt-item-meta">
+        <span class="appt-price">${formatCOP(a.price)}</span>
+        <button class="appt-cancel" onclick="cancelAppointment(${a.id})">Cancelar cita</button>
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wolves Barber — Galería</title>
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+<style>
+.gallery-section{padding:4rem 2rem 6rem;max-width:1200px;margin:0 auto}
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.filter-btn{padding:.5rem 1.2rem;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(201,168,76,.25);border-radius:50px;background:none;color:var(--text-muted);cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.masonry{columns:3;column-gap:1rem}
+.masonry-item{break-inside:avoid;margin-bottom:1rem;position:relative;overflow:hidden;border-radius:6px;cursor:pointer}
+.masonry-item img{width:100%;display:block;filter:brightness(.85) saturate(.9);transition:all .35s}
+.masonry-item:hover img{filter:brightness(1) saturate(1);transform:scale(1.03)}
+.masonry-item-overlay{position:absolute;inset:0;background:rgba(10,10,10,0);display:flex;align-items:flex-end;padding:1rem;transition:background .3s}
+.masonry-item:hover .masonry-item-overlay{background:rgba(10,10,10,.55)}
+.masonry-item-label{font-family:'Playfair Display',serif;font-size:.9rem;color:#fff;opacity:0;transform:translateY(8px);transition:all .3s}
+.masonry-item:hover .masonry-item-label{opacity:1;transform:translateY(0)}
+#lightbox{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center}
+#lightbox.open{display:flex}
+#lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border:1px solid var(--gold-border);border-radius:4px}
+#lightbox-close{position:absolute;top:20px;right:24px;font-size:2rem;color:var(--text);background:none;border:none;cursor:pointer;line-height:1}
+#lightbox-close:hover{color:var(--gold)}
+#lightbox-caption{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:'Playfair Display',serif;color:var(--gold);font-size:1rem}
+@media(max-width:768px){.masonry{columns:2}}
+@media(max-width:480px){.masonry{columns:1}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-brand"><img src="images/logo.jpg" alt="Logo"><span>THE WOLVES <em>BARBER</em></span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li><li><a href="servicios.html">Servicios</a></li>
+    <li><a href="reservas.html">Reservas</a></li><li><a href="galeria.html" class="active">Galería</a></li>
+    <li><a href="resenas.html">Reseñas</a></li><li><a href="nosotros.html">Nosotros</a></li>
+  </ul>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+  <button class="btn btn-outline btn-sm" id="logout-btn" style="display:none;margin-left:0.75rem;font-size:0.72rem">Cerrar Sesión</button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<nav class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Inicio</a><a href="servicios.html">Servicios</a><a href="reservas.html">Reservas</a>
+  <a href="galeria.html" class="active">Galería</a><a href="resenas.html">Reseñas</a><a href="nosotros.html">Nosotros</a>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+</nav>
+
+<main>
+  <div class="page-banner">
+    <span class="section-tag">Nuestro trabajo</span>
+    <h1>Galería de <span>Estilos</span></h1>
+    <p>Cada imagen es una historia de precisión y estilo. Así luce el trabajo de The Wolves Barber.</p>
+  </div>
+
+  <div class="gallery-section">
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="cortes">Cortes</button>
+      <button class="filter-btn" data-filter="barba">Barba</button>
+      <button class="filter-btn" data-filter="fade">Fade</button>
+      <button class="filter-btn" data-filter="textura">Texturizado</button>
+    </div>
+    <div class="masonry" id="masonry"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><img src="images/logo.jpg" alt="Logo"><h3>The Wolves Barber</h3><p>El santuario de la masculinidad en Bogotá.</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📍 Bogotá, Colombia<br>📱 <a href="https://wa.me/573227418794" style="color:var(--gold)">+57 322 741 8794</a><br>🕒 L–S: 9am–8pm | Dom: 10am–5pm</p></div>
+  </div>
+  <div class="footer-bottom"><p>© 2024 <span>The Wolves Barber</span>. Todos los derechos reservados.</p></div>
+</footer>
+
+<div id="lightbox">
+  <button id="lightbox-close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <div id="lightbox-caption"></div>
+</div>
+
+<button id="chat-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+<div id="chat-panel">
+  <div class="chat-header"><div class="chat-header-avatar">🐺</div><div class="chat-header-info"><h4>Soporte Wolves</h4><p>Asistente disponible 24/7</p></div><button class="chat-close" id="chat-close">&times;</button></div>
+  <div id="chat-messages"><div class="chat-msg bot">¡Hola! ¿Te gustó algún estilo de la galería? ¡Te ayudo a reservarlo!</div></div>
+  <div class="chat-quick"><button class="chat-quick-btn">¿Cuáles son los precios?</button><button class="chat-quick-btn">¿Cómo reservo?</button><button class="chat-quick-btn">Contactar administrador</button></div>
+  <div class="chat-input-area"><input type="text" id="chat-input" placeholder="Escribe tu pregunta..."><button class="chat-send" id="chat-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+</div>
+<div id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+const GALLERY = [
+  { src:'images/gal-diseno.jpg',      label:'Diseño Tribal',        cat:'fade' },
+  { src:'images/gal-mullet.jpg',      label:'Mullet Moderno',       cat:'cortes' },
+  { src:'images/gal-bowl.jpg',        label:'Bowl Cut Fade',        cat:'cortes' },
+  { src:'images/gal-crop-barba.jpg',  label:'Crop Fade + Barba',    cat:'barba' },
+  { src:'images/gal-pompadour.jpg',   label:'Pompadour Fade',       cat:'cortes' },
+  { src:'images/gal-textured.jpg',    label:'Texturizado Trasero',  cat:'textura' },
+  { src:'images/gal-french-crop.jpg', label:'French Crop',          cat:'cortes' },
+  { src:'images/gal-afro.jpg',        label:'Afro Fade',            cat:'fade' },
+  { src:'images/gal-crop2.jpg',       label:'Crop con Barba',       cat:'barba' },
+  { src:'images/gal-quiff.jpg',       label:'Quiff Texturizado',    cat:'textura' },
+  { src:'images/gal-sidepart.jpg',    label:'Side Part Fade',       cat:'fade' },
+];
+
+function renderGallery(filter) {
+  const list = filter === 'all' ? GALLERY : GALLERY.filter(g => g.cat === filter);
+  const m = document.getElementById('masonry');
+  const animClasses = ['fade-up','zoom-in','fade-left','zoom-in','fade-right','fade-up','zoom-in','fade-left','fade-right','fade-up','zoom-in'];
+  m.innerHTML = list.map((g,i) => `
+    <div class="masonry-item reveal ${animClasses[i % animClasses.length]}" data-cat="${g.cat}" onclick="openLightbox('${g.src}','${g.label}')">
+      <img src="${g.src}" alt="${g.label}" loading="lazy">
+      <div class="masonry-item-overlay"><span class="masonry-item-label">${g.label}</span></div>
+    </div>
+  `).join('');
+  initReveal();
+}
+
+function openLightbox(src, label) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-caption').textContent = label;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+document.addEventListener('DOMContentLoaded', () => {
+  requireAuth();
+  renderGallery('all');
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGallery(btn.dataset.filter);
+    });
+  });
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  document.getElementById('lightbox').addEventListener('click', e => { if(e.target.id==='lightbox') closeLightbox(); });
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wolves Barber — Reseñas</title>
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+<style>
+.reviews-layout{display:grid;grid-template-columns:1fr 2fr;gap:3rem;max-width:1100px;margin:0 auto;padding:4rem 2rem 6rem}
+.rating-overview{background:var(--surface);border:1px solid var(--gold-border);border-radius:8px;padding:2rem;text-align:center;height:fit-content;position:sticky;top:100px}
+.big-rating{font-family:'Playfair Display',serif;font-size:5rem;font-weight:700;color:var(--gold);line-height:1}
+.big-stars{margin:0.5rem 0;font-size:1.4rem}
+.rating-count{font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem}
+.rating-bars{display:flex;flex-direction:column;gap:0.5rem;text-align:left}
+.rating-bar-row{display:flex;align-items:center;gap:0.75rem;font-size:0.78rem;color:var(--text-muted)}
+.rating-bar-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.rating-bar-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .6s}
+.review-card{background:var(--surface);border:1px solid rgba(201,168,76,0.1);border-radius:8px;padding:1.5rem;margin-bottom:1rem;transition:border-color .2s}
+.review-card:hover{border-color:rgba(201,168,76,0.3)}
+.review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;flex-wrap:wrap;gap:0.5rem}
+.review-author{font-family:'Playfair Display',serif;font-size:1rem}
+.review-date{font-size:0.75rem;color:var(--text-dim)}
+.review-stars{margin-bottom:0.75rem}
+.review-text{font-size:0.88rem;color:var(--text-muted);line-height:1.7}
+.review-form-card{background:var(--surface);border:1px solid var(--gold-border);border-radius:8px;padding:1.75rem;margin-bottom:2rem}
+.review-form-card h3{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1.25rem}
+.star-picker{display:flex;gap:0.25rem;margin-bottom:1rem}
+.star-pick{font-size:1.8rem;cursor:pointer;color:var(--text-dim);transition:color .15s,transform .15s}
+.star-pick:hover,.star-pick.active{color:var(--gold);transform:scale(1.2)}
+@media(max-width:768px){.reviews-layout{grid-template-columns:1fr}.rating-overview{position:static}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-brand"><img src="images/logo.jpg" alt="Logo"><span>THE WOLVES <em>BARBER</em></span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li><li><a href="servicios.html">Servicios</a></li>
+    <li><a href="reservas.html">Reservas</a></li><li><a href="galeria.html">Galería</a></li>
+    <li><a href="resenas.html" class="active">Reseñas</a></li><li><a href="nosotros.html">Nosotros</a></li>
+  </ul>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+  <button class="btn btn-outline btn-sm" id="logout-btn" style="display:none;margin-left:0.75rem;font-size:0.72rem">Cerrar Sesión</button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<nav class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Inicio</a><a href="servicios.html">Servicios</a><a href="reservas.html">Reservas</a>
+  <a href="galeria.html">Galería</a><a href="resenas.html" class="active">Reseñas</a><a href="nosotros.html">Nosotros</a>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+</nav>
+
+<main>
+  <div class="page-banner">
+    <span class="section-tag">Lo que dicen nuestros clientes</span>
+    <h1>Reseñas <span>Reales</span></h1>
+    <p>La opinión de cada cliente es nuestra mejor carta de presentación.</p>
+  </div>
+
+  <div class="reviews-layout">
+    <div>
+      <div class="rating-overview reveal fade-left">
+        <div class="big-rating" id="avg-rating">5.0</div>
+        <div class="big-stars" id="avg-stars"></div>
+        <div class="rating-count" id="rev-count">0 reseñas</div>
+        <div class="rating-bars" id="rating-bars"></div>
+        <div style="margin-top:1.5rem">
+          <a href="reservas.html" class="btn btn-primary btn-sm" style="width:100%;justify-content:center">Reservar Cita</a>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="review-form-card reveal fade-right">
+        <h3>Deja tu Reseña</h3>
+        <div class="form-group">
+          <label>Tu nombre</label>
+          <input type="text" id="rev-name" placeholder="Tu nombre completo">
+        </div>
+        <div class="form-group">
+          <label>Calificación</label>
+          <div class="star-picker" id="star-picker">
+            <span class="star-pick" data-v="1">★</span>
+            <span class="star-pick" data-v="2">★</span>
+            <span class="star-pick" data-v="3">★</span>
+            <span class="star-pick" data-v="4">★</span>
+            <span class="star-pick" data-v="5">★</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tu experiencia</label>
+          <textarea id="rev-comment" rows="3" placeholder="Cuéntanos cómo te fue..."></textarea>
+        </div>
+        <button class="btn btn-primary btn-sm" id="submit-review">Publicar Reseña</button>
+      </div>
+
+      <div id="reviews-list"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><img src="images/logo.jpg" alt="Logo"><h3>The Wolves Barber</h3><p>El santuario de la masculinidad en Bogotá.</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📍 Bogotá, Colombia<br>📱 <a href="https://wa.me/573227418794" style="color:var(--gold)">+57 322 741 8794</a><br>🕒 L–S: 9am–8pm | Dom: 10am–5pm</p></div>
+  </div>
+  <div class="footer-bottom"><p>© 2024 <span>The Wolves Barber</span>. Todos los derechos reservados.</p></div>
+</footer>
+
+<button id="chat-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+<div id="chat-panel">
+  <div class="chat-header"><div class="chat-header-avatar">🐺</div><div class="chat-header-info"><h4>Soporte Wolves</h4><p>Asistente disponible 24/7</p></div><button class="chat-close" id="chat-close">&times;</button></div>
+  <div id="chat-messages"><div class="chat-msg bot">¡Hola! ¿En qué puedo ayudarte hoy?</div></div>
+  <div class="chat-quick"><button class="chat-quick-btn">¿Cuáles son los precios?</button><button class="chat-quick-btn">¿Cómo reservo?</button><button class="chat-quick-btn">Contactar administrador</button></div>
+  <div class="chat-input-area"><input type="text" id="chat-input" placeholder="Escribe tu pregunta..."><button class="chat-send" id="chat-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+</div>
+<div id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+let selectedRating = 0;
+
+document.addEventListener('DOMContentLoaded', () => {
+  requireAuth();
+  renderReviews();
+
+  document.querySelectorAll('.star-pick').forEach(s => {
+    s.addEventListener('mouseover', () => highlightStars(parseInt(s.dataset.v)));
+    s.addEventListener('click', () => { selectedRating = parseInt(s.dataset.v); highlightStars(selectedRating); });
+  });
+  document.getElementById('star-picker').addEventListener('mouseleave', () => highlightStars(selectedRating));
+  document.getElementById('submit-review').addEventListener('click', submitReview);
+});
+
+function highlightStars(n) {
+  document.querySelectorAll('.star-pick').forEach((s, i) => { s.classList.toggle('active', i < n); });
+}
+
+function submitReview() {
+  const name = document.getElementById('rev-name').value.trim();
+  const comment = document.getElementById('rev-comment').value.trim();
+  if (!name) { showToast('Por favor ingresa tu nombre', 'error'); return; }
+  if (!selectedRating) { showToast('Por favor selecciona una calificación', 'error'); return; }
+  if (!comment) { showToast('Por favor escribe tu experiencia', 'error'); return; }
+
+  const revs = getReviews();
+  revs.unshift({ id: Date.now(), name, rating: selectedRating, comment, date: new Date().toISOString().split('T')[0] });
+  saveReviews(revs);
+  document.getElementById('rev-name').value = '';
+  document.getElementById('rev-comment').value = '';
+  selectedRating = 0; highlightStars(0);
+  showToast('¡Reseña publicada! Gracias.', 'success');
+  renderReviews();
+}
+
+function renderReviews() {
+  const revs = getReviews();
+  const avg = revs.reduce((s,r) => s + r.rating, 0) / revs.length;
+  document.getElementById('avg-rating').textContent = avg.toFixed(1);
+  document.getElementById('avg-stars').innerHTML = stars(Math.round(avg), 1.3);
+  document.getElementById('rev-count').textContent = revs.length + ' reseña' + (revs.length !== 1 ? 's' : '');
+
+  const bars = document.getElementById('rating-bars');
+  bars.innerHTML = [5,4,3,2,1].map(n => {
+    const count = revs.filter(r => r.rating === n).length;
+    const pct = revs.length ? Math.round(count / revs.length * 100) : 0;
+    return `<div class="rating-bar-row">
+      <span>${n}★</span>
+      <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
+      <span style="min-width:24px">${count}</span>
+    </div>`;
+  }).join('');
+
+  const list = document.getElementById('reviews-list');
+  list.innerHTML = revs.map(r => `
+    <div class="review-card reveal">
+      <div class="review-header">
+        <span class="review-author">${r.name}</span>
+        <span class="review-date">${r.date || ''}</span>
+      </div>
+      <div class="review-stars">${stars(r.rating)}</div>
+      <p class="review-text">${r.comment}</p>
+    </div>
+  `).join('');
+  initReveal();
+}
+</script>
+
+<script>
+// Animar barras de rating al hacer scroll
+const barsObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.rating-bar-fill').forEach(bar => {
+        const w = bar.style.width; bar.style.width = '0';
+        setTimeout(() => { bar.style.transition = 'width 1s ease'; bar.style.width = w; }, 100);
+      });
+      barsObs.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+const barsEl = document.getElementById('rating-bars');
+if (barsEl) barsObs.observe(barsEl.closest('.rating-overview') || barsEl);
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wolves Barber — Nosotros</title>
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+<style>
+.about-hero{position:relative;height:60vh;min-height:400px;display:flex;align-items:center;padding:0 2rem;overflow:hidden}
+.about-hero-bg{position:absolute;inset:0;background:url('images/barba.jpg') center/cover no-repeat}
+.about-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.92) 40%,rgba(10,10,10,.4) 100%)}
+.about-hero-content{position:relative;z-index:2;max-width:580px}
+.about-hero-content h1{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:1rem}
+.about-hero-content h1 span{color:var(--gold)}
+.about-hero-content p{color:var(--text-muted);font-size:1rem;line-height:1.7}
+.story-section{padding:6rem 2rem;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.story-text h2{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:1rem}
+.story-text h2 span{color:var(--gold)}
+.story-text p{color:var(--text-muted);line-height:1.8;margin-bottom:1rem}
+.story-img{border-radius:8px;overflow:hidden;border:1px solid var(--gold-border)}
+.story-img img{width:100%;height:360px;object-fit:cover}
+.timeline-section{background:var(--bg2);border-top:1px solid var(--gold-border);border-bottom:1px solid var(--gold-border);padding:6rem 2rem}
+.timeline-section .inner{max-width:800px;margin:0 auto}
+.timeline{position:relative;margin-top:3rem}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--gold-border);transform:translateX(-50%)}
+.tl-item{display:flex;gap:2rem;margin-bottom:2.5rem;position:relative}
+.tl-item:nth-child(even){flex-direction:row-reverse}
+.tl-item:nth-child(even) .tl-content{text-align:right}
+.tl-year{flex-shrink:0;width:calc(50% - 1.5rem);display:flex;justify-content:flex-end}
+.tl-item:nth-child(even) .tl-year{justify-content:flex-start}
+.tl-year-badge{background:var(--gold);color:var(--bg);font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;padding:.4rem .9rem;border-radius:50px;height:fit-content}
+.tl-dot{position:absolute;left:50%;top:0;width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);transform:translateX(-50%)}
+.tl-content{width:calc(50% - 1.5rem)}
+.tl-content h4{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:.3rem}
+.tl-content p{font-size:.83rem;color:var(--text-muted);line-height:1.6}
+.barbers-section{padding:6rem 2rem;max-width:1100px;margin:0 auto}
+.barbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem}
+.barber-profile{background:var(--surface);border:1px solid rgba(201,168,76,.1);border-radius:8px;padding:1.75rem;text-align:center;transition:border-color .3s,transform .2s}
+.barber-profile:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px)}
+.barber-emoji{font-size:3rem;margin-bottom:1rem}
+.barber-profile h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--gold);margin-bottom:.5rem}
+.barber-profile .spec{font-size:.78rem;color:var(--text-muted);margin-bottom:1rem}
+.barber-profile .skills{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center}
+.skill-tag{font-size:.68rem;padding:.2rem .55rem;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:50px;color:var(--gold)}
+.values-section{background:var(--bg2);padding:6rem 2rem;border-top:1px solid var(--gold-border)}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:1100px;margin:3rem auto 0}
+.value-card{background:var(--surface);border:1px solid rgba(201,168,76,.1);border-radius:8px;padding:2rem;border-top:3px solid var(--gold)}
+.value-icon{font-size:2rem;margin-bottom:1rem}
+.value-card h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.75rem;color:var(--gold)}
+.value-card p{font-size:.85rem;color:var(--text-muted);line-height:1.7}
+@media(max-width:768px){
+  .story-section{grid-template-columns:1fr;gap:2rem}
+  .timeline::before{left:20px}
+  .tl-item,.tl-item:nth-child(even){flex-direction:column;padding-left:50px}
+  .tl-year,.tl-item:nth-child(even) .tl-year{width:auto;justify-content:flex-start}
+  .tl-content,.tl-item:nth-child(even) .tl-content{width:auto;text-align:left}
+  .tl-dot{left:20px}
+  .barbers-grid{grid-template-columns:1fr 1fr}
+  .values-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){.barbers-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-brand"><img src="images/logo.jpg" alt="Logo"><span>THE WOLVES <em>BARBER</em></span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li><li><a href="servicios.html">Servicios</a></li>
+    <li><a href="reservas.html">Reservas</a></li><li><a href="galeria.html">Galería</a></li>
+    <li><a href="resenas.html">Reseñas</a></li><li><a href="nosotros.html" class="active">Nosotros</a></li>
+  </ul>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+  <button class="btn btn-outline btn-sm" id="logout-btn" style="display:none;margin-left:0.75rem;font-size:0.72rem">Cerrar Sesión</button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<nav class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Inicio</a><a href="servicios.html">Servicios</a><a href="reservas.html">Reservas</a>
+  <a href="galeria.html">Galería</a><a href="resenas.html">Reseñas</a><a href="nosotros.html" class="active">Nosotros</a>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+</nav>
+
+<main>
+  <section class="about-hero">
+    <div class="about-hero-bg"></div>
+    <div class="about-hero-overlay"></div>
+    <div class="about-hero-content reveal">
+      <span class="section-tag">Nuestra historia</span>
+      <h1 class="shimmer-title">Somos The Wolves</h1>
+      <p>Nacimos del SENA con una visión clara: traer una barbería de excelencia a Ciudad Verde, Soacha. Somos jóvenes, somos aprendices, somos emprendedores. Y no vamos a parar hasta lograrlo.</p>
+    </div>
+  </section>
+
+  <section class="story-section">
+    <div class="story-text reveal fade-left">
+      <span class="section-tag">Nuestros orígenes</span>
+      <h2>La Historia de <span>The Wolves</span></h2>
+      <div class="divider"></div>
+      <p>Todo comienza con una idea, y la nuestra nació en 2025 en los pasillos del SENA: crear una barbería que no fuera simplemente un lugar donde cortan cabello, sino un espacio donde la disciplina, el arte y el emprendimiento se unen en cada navajada.</p>
+      <p>The Wolves Barber es un proyecto de emprendimiento formativo que se está construyendo desde cero, con las manos, el esfuerzo y la pasión de jóvenes aprendices comprometidos con hacer las cosas bien. Nuestro hogar está en Ciudad Verde, Soacha — un municipio que merece lo mejor, y nosotros venimos a dárselo.</p>
+      <p>Cada semana avanzamos un poco más. Cada corte practicado, cada técnica aprendida, cada detalle pulido es un ladrillo más en la construcción de este sueño. No tenemos décadas de historia todavía, pero sí tenemos algo que vale más: el hambre de crecer y la determinación de no parar hasta lograrlo.</p>
+      <p>Creemos que la excelencia no espera a tener recursos infinitos. La excelencia se construye con lo que tienes, donde estás, junto a las personas correctas. Y eso es exactamente lo que estamos haciendo: levantando a The Wolves Barber, paso a paso, tijera a tijera, con orgullo de ser SENA y orgullo de ser de Soacha.</p>
+      <p style="color:var(--gold);font-style:italic;font-size:.9rem;margin-top:.5rem">— En construcción. En marcha. Sin parar. 🐺</p>
+      <a href="reservas.html" class="btn btn-primary btn-sm" style="margin-top:1rem">Reservar Cita &rarr;</a>
+    </div>
+    <div class="story-img reveal fade-right reveal-delay-1">
+      <img src="images/deg-clasico.jpg" alt="Barbería">
+    </div>
+  </section>
+
+  <section class="timeline-section">
+    <div class="inner">
+      <div class="section-header center reveal">
+        <span class="section-tag">Nuestra evolución</span>
+        <h2 class="section-title">Línea del <span>Tiempo</span></h2>
+        <div class="gold-line center"></div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item reveal fade-left"><div class="tl-year"><span class="tl-year-badge">2025</span></div><div class="tl-dot"></div><div class="tl-content"><h4>La Chispa Inicial</h4><p>Nace la idea en el SENA: un grupo de aprendices con visión decide que Soacha merece una barbería de verdad. The Wolves Barber comienza a tomar forma.</p></div></div>
+        <div class="tl-item reveal fade-right"><div class="tl-year"><span class="tl-year-badge">2025</span></div><div class="tl-dot"></div><div class="tl-content"><h4>El Equipo se Forma</h4><p>Los Wolves se consolidan: Leonardo, Albeiro, Johan y Carlos se unen con un objetivo común. Cuatro personalidades, una sola misión: la excelencia.</p></div></div>
+        <div class="tl-item reveal fade-left"><div class="tl-year"><span class="tl-year-badge">2025</span></div><div class="tl-dot"></div><div class="tl-content"><h4>Ciudad Verde, Nuestro Territorio</h4><p>Elegimos Ciudad Verde, Soacha, como nuestro hogar. Una comunidad vibrante que merece un espacio premium donde sentirse bien.</p></div></div>
+        <div class="tl-item reveal fade-right"><div class="tl-year"><span class="tl-year-badge">Pronto</span></div><div class="tl-dot"></div><div class="tl-content"><h4>Construcción en Marcha</h4><p>Cada día avanzamos: técnica, espacio, identidad. Estamos puliendo cada detalle para abrir nuestras puertas con todo lo que prometemos.</p></div></div>
+        <div class="tl-item reveal fade-left"><div class="tl-year"><span class="tl-year-badge">Pronto</span></div><div class="tl-dot"></div><div class="tl-content"><h4>El Gran Lanzamiento</h4><p>Cuando abramos, no será solo una barbería — será una declaración. The Wolves Barber: donde el talento SENA se convierte en leyenda.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="barbers-section">
+    <div class="section-header center reveal">
+      <span class="section-tag">El equipo</span>
+      <h2 class="section-title">Los <span>Maestros</span></h2>
+      <div class="gold-line center"></div>
+      <p class="section-desc" style="margin-top:1rem">Cuatro artistas, cuatro estilos, un solo estándar: la perfección.</p>
+    </div>
+    <div class="barbers-grid">
+      <div class="barber-profile reveal zoom-in">
+        <div class="barber-emoji float-anim">🐺</div>
+        <h3>Leonardo Márquez</h3>
+        <div class="spec">Fundador · Especialista en Fades</div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.6">Fundador y maestro. Sus fades son legendarios en Bogotá. Precisión y arte en cada degradado.</p>
+        <div class="skills">
+          <span class="skill-tag">Fade Alto</span><span class="skill-tag">Fade Medio</span>
+          <span class="skill-tag">Degradado</span><span class="skill-tag">Skin Fade</span>
+        </div>
+      </div>
+      <div class="barber-profile reveal zoom-in reveal-delay-1">
+        <div class="barber-emoji float-anim" style="animation-delay:.3s">🌑</div>
+        <h3>Albeiro Quiroga</h3>
+        <div class="spec">Co-fundador · Master en Clásicos</div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.6">La navaja en sus manos es como un pincel. Especialista en el corte clásico atemporal y el arreglo de barba perfecto.</p>
+        <div class="skills">
+          <span class="skill-tag">Corte Clásico</span><span class="skill-tag">Barba</span>
+          <span class="skill-tag">Afeitado</span><span class="skill-tag">Diseño de Barba</span>
+        </div>
+      </div>
+      <div class="barber-profile reveal zoom-in reveal-delay-2">
+        <div class="barber-emoji float-anim" style="animation-delay:.6s">⚔️</div>
+        <h3>Johan Rivera</h3>
+        <div class="spec">Artista · Experto en Diseños</div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.6">El más creativo del equipo. Sus diseños son precisos como bisturís y originales como el arte urbano.</p>
+        <div class="skills">
+          <span class="skill-tag">Texturizado</span><span class="skill-tag">Diseños</span>
+          <span class="skill-tag">Moderno</span><span class="skill-tag">Corte Niño</span>
+        </div>
+      </div>
+      <div class="barber-profile reveal zoom-in reveal-delay-3">
+        <div class="barber-emoji float-anim" style="animation-delay:.9s">💈</div>
+        <h3>Carlos Penagos</h3>
+        <div class="spec">Especialista · Cortes Modernos</div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.6">Experto en tendencias actuales y estilos contemporáneos. Lleva el estilo urbano a otro nivel.</p>
+        <div class="skills">
+          <span class="skill-tag">Corte Moderno</span><span class="skill-tag">Textura</span>
+          <span class="skill-tag">Tendencias</span><span class="skill-tag">Volumen</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="values-section">
+    <div class="section-header center reveal">
+      <span class="section-tag">Lo que nos define</span>
+      <h2 class="section-title" style="color:var(--text)">Nuestros <span style="color:var(--gold)">Valores</span></h2>
+      <div class="gold-line center"></div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal zoom-in">
+        <div class="value-icon">✂️</div>
+        <h3>Precisión Absoluta</h3>
+        <p>No aceptamos "casi bien". Cada línea, cada degradado, cada detalle es trabajado hasta que sea perfecto. La mediocridad no tiene lugar aquí.</p>
+      </div>
+      <div class="value-card reveal zoom-in reveal-delay-1">
+        <div class="value-icon">🤝</div>
+        <h3>Respeto y Confianza</h3>
+        <p>Tu cabeza en nuestras manos es un acto de confianza. Lo tomamos en serio. Te escuchamos, te asesoramos y siempre entregamos más de lo prometido.</p>
+      </div>
+      <div class="value-card reveal zoom-in reveal-delay-2">
+        <div class="value-icon">🏆</div>
+        <h3>Tradición con Visión</h3>
+        <p>Respetamos las raíces de la barbería clásica pero no le tenemos miedo al futuro. Combinamos técnicas ancestrales con tendencias modernas.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><img src="images/logo.jpg" alt="Logo"><h3>The Wolves Barber</h3><p>El santuario de la masculinidad en Bogotá.</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📍 Bogotá, Colombia<br>📱 <a href="https://wa.me/573227418794" style="color:var(--gold)">+57 322 741 8794</a><br>🕒 L–S: 9am–8pm | Dom: 10am–5pm</p></div>
+  </div>
+  <div class="footer-bottom"><p>© 2024 <span>The Wolves Barber</span>. Todos los derechos reservados.</p></div>
+</footer>
+
+<button id="chat-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+<div id="chat-panel">
+  <div class="chat-header"><div class="chat-header-avatar">🐺</div><div class="chat-header-info"><h4>Soporte Wolves</h4><p>Asistente disponible 24/7</p></div><button class="chat-close" id="chat-close">&times;</button></div>
+  <div id="chat-messages"><div class="chat-msg bot">¡Hola! ¿Quieres conocer más sobre nuestro equipo o servicios?</div></div>
+  <div class="chat-quick"><button class="chat-quick-btn">¿Cuáles son los precios?</button><button class="chat-quick-btn">¿Cómo reservo?</button><button class="chat-quick-btn">Contactar administrador</button></div>
+  <div class="chat-input-area"><input type="text" id="chat-input" placeholder="Escribe tu pregunta..."><button class="chat-send" id="chat-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+</div>
+<div id="toast"></div>
+<script src="script.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { requireAuth(); });</script>
+
+<script>
+// Parallax suave en el hero
+window.addEventListener('scroll', () => {
+  const bg = document.querySelector('.about-hero-bg');
+  if (bg) bg.style.transform = 'translateY(' + (window.scrollY * 0.3) + 'px)';
+}, { passive: true });
+</script>
+</body>
+</html>

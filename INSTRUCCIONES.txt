@@ -1,0 +1,57 @@
+======================================================
+  THE WOLVES BARBER — INSTRUCCIONES DE USO
+======================================================
+
+Este proyecto tiene dos partes:
+  1. Pagina web  →  archivos HTML/CSS/JS (esta carpeta)
+  2. Backend     →  carpeta "backend/" (Django - Python)
+
+El backend maneja el registro, login y bloqueo de cuentas
+tras 3 intentos fallidos.
+
+------------------------------------------------------
+REQUISITOS
+------------------------------------------------------
+- Python 3.10 o superior instalado
+- pip disponible
+
+------------------------------------------------------
+PASO 1 — Instalar Django (solo la primera vez)
+------------------------------------------------------
+Abre una terminal en la carpeta "backend/" y ejecuta:
+
+    pip install -r requirements.txt
+
+------------------------------------------------------
+PASO 2 — Crear la base de datos (solo la primera vez)
+------------------------------------------------------
+Dentro de la carpeta "backend/" ejecuta:
+
+    python manage.py migrate
+
+------------------------------------------------------
+PASO 3 — Iniciar el servidor backend
+------------------------------------------------------
+Dentro de la carpeta "backend/" ejecuta:
+
+    python manage.py runserver
+
+El servidor quedará en: http://localhost:8000
+
+------------------------------------------------------
+PASO 4 — Abrir la página web
+------------------------------------------------------
+Abre el archivo "index.html" en tu navegador.
+  - Si no estás registrado, te redirige a auth.html
+  - Desde ahí puedes registrarte o iniciar sesión
+
+------------------------------------------------------
+NOTAS
+------------------------------------------------------
+- El backend debe estar corriendo SIEMPRE que uses la página
+- Si cierras la terminal, el login dejará de funcionar
+- Los datos de usuarios se guardan en backend/db.sqlite3
+- Panel de administración Django: http://localhost:8000/admin/
+  (crear superusuario: python manage.py createsuperuser)
+
+======================================================

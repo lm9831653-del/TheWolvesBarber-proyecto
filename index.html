@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wolves Barber — Inicio</title>
+<link rel="icon" href="images/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="style.css">
+<style>
+.hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:url('images/deg-clasico.jpg') center/cover no-repeat}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,0.55) 0%,rgba(10,10,10,0.80) 60%,rgba(10,10,10,1) 100%)}
+.hero-content{position:relative;z-index:2;padding:2rem}
+.hero-logo{width:160px;height:160px;object-fit:contain;border-radius:50%;border:2px solid var(--gold-border);margin:0 auto 2rem;filter:drop-shadow(0 0 32px rgba(201,168,76,0.4));animation:logoGlow 3s ease-in-out infinite alternate}
+@keyframes logoGlow{from{filter:drop-shadow(0 0 20px rgba(201,168,76,0.3))}to{filter:drop-shadow(0 0 48px rgba(201,168,76,0.6))}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,7vw,5.5rem);font-weight:700;letter-spacing:-0.01em;line-height:1.05;margin-bottom:1.25rem}
+.hero-title em{color:var(--gold);font-style:normal}
+.hero-sub{font-size:1.05rem;color:rgba(240,237,232,0.75);max-width:500px;margin:0 auto 2.5rem;line-height:1.7}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--text-muted);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;animation:bounce 2s ease infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+.hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent)}
+.stats-section{background:var(--bg2);border-top:1px solid var(--gold-border);border-bottom:1px solid var(--gold-border);padding:3rem 2rem}
+.stats-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--gold);line-height:1}
+.stat-label{font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;margin-top:0.4rem}
+.services-preview{padding:6rem 2rem}
+.services-preview .inner{max-width:1100px;margin:0 auto}
+.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.srv-card{background:var(--surface);border:1px solid rgba(201,168,76,0.1);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .3s,transform .2s,box-shadow .2s}
+.srv-card:hover{border-color:rgba(201,168,76,0.4);transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.5)}
+.srv-card img{width:100%;height:200px;object-fit:cover;filter:brightness(0.85);transition:filter .3s}
+.srv-card:hover img{filter:brightness(1)}
+.srv-card-body{padding:1.5rem}
+.srv-card-cat{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+.srv-card-name{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.5rem}
+.srv-card-desc{font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6}
+.srv-card-footer{display:flex;align-items:center;justify-content:space-between}
+.srv-card-price{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold);font-weight:700}
+.srv-card-dur{font-size:0.78rem;color:var(--text-dim)}
+.gallery-strip{padding:0 0 6rem}
+.gallery-strip .inner{max-width:1100px;margin:0 auto;padding:0 2rem}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-top:3rem}
+.gallery-grid img{width:100%;height:280px;object-fit:cover;filter:brightness(0.8) saturate(0.9);transition:all .3s;cursor:pointer;border-radius:4px}
+.gallery-grid img:hover{filter:brightness(1) saturate(1);transform:scale(1.02)}
+.cta-section{background:var(--surface);border:1px solid var(--gold-border);margin:0 2rem 6rem;border-radius:8px;padding:4rem 2rem;text-align:center;max-width:900px;margin-left:auto;margin-right:auto}
+.cta-section h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem)}
+.cta-section h2 span{color:var(--gold)}
+.cta-section p{color:var(--text-muted);margin:1rem 0 2rem;font-size:1rem}
+@media(max-width:768px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:2rem}
+  .srv-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="images/logo.jpg" alt="Logo">
+    <span>THE WOLVES <em>BARBER</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html"      data-page="index"     class="active">Inicio</a></li>
+    <li><a href="servicios.html"  data-page="servicios">Servicios</a></li>
+    <li><a href="reservas.html"   data-page="reservas">Reservas</a></li>
+    <li><a href="galeria.html"    data-page="galeria">Galería</a></li>
+    <li><a href="resenas.html"    data-page="resenas">Reseñas</a></li>
+    <li><a href="nosotros.html"   data-page="nosotros">Nosotros</a></li>
+  </ul>
+  <a href="reservas.html" class="nav-cta">Reservar Ahora</a>
+  <button class="btn btn-outline btn-sm" id="logout-btn" style="display:none;margin-left:0.75rem;font-size:0.72rem">Cerrar Sesión</button>
+  <button class="hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<nav class="mobile-menu" id="mobile-menu">
+  <a href="index.html"     data-page="index"     class="active">Inicio</a>
+  <a href="servicios.html" data-page="servicios">Servicios</a>
+  <a href="reservas.html"  data-page="reservas">Reservas</a>
+  <a href="galeria.html"   data-page="galeria">Galería</a>
+  <a href="resenas.html"   data-page="resenas">Reseñas</a>
+  <a href="nosotros.html"  data-page="nosotros">Nosotros</a>
+  <a href="reservas.html"  class="nav-cta">Reservar Ahora</a>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <img src="images/logo.jpg" alt="The Wolves Barber" class="hero-logo">
+      <h1 class="hero-title">THE WOLVES <em class="shimmer-title">BARBER</em></h1>
+      <p class="hero-sub">Donde la tradición se encuentra con la excelencia. El santuario de la masculinidad en Bogotá.</p>
+      <div class="hero-actions">
+        <a href="reservas.html" class="btn btn-primary">Reservar Cita &rarr;</a>
+        <a href="servicios.html" class="btn btn-outline">Ver Servicios</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item reveal zoom-in">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Años de Experiencia</div>
+      </div>
+      <div class="stat-item reveal zoom-in reveal-delay-1">
+        <div class="stat-num">5K+</div>
+        <div class="stat-label">Clientes Satisfechos</div>
+      </div>
+      <div class="stat-item reveal zoom-in reveal-delay-2">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Barberos Maestros</div>
+      </div>
+      <div class="stat-item reveal zoom-in reveal-delay-3">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Satisfacción</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-preview">
+    <div class="inner">
+      <div class="section-header reveal fade-up">
+        <span class="section-tag">Lo que hacemos</span>
+        <h2 class="section-title">Nuestros <span>Servicios</span></h2>
+        <div class="gold-line"></div>
+        <p class="section-desc" style="margin-top:1rem">Cada corte es una obra de arte. Desde el clásico atemporado hasta el fade más afilado.</p>
+      </div>
+      <div class="srv-grid" id="featured-services"></div>
+      <div style="text-align:center;margin-top:3rem">
+        <a href="servicios.html" class="btn btn-outline">Ver Todos los Servicios &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-strip">
+    <div class="inner">
+      <div class="section-header reveal">
+        <span class="section-tag">Nuestro Trabajo</span>
+        <h2 class="section-title">Galería de <span>Estilos</span></h2>
+        <div class="gold-line"></div>
+      </div>
+      <div class="gallery-grid">
+        <img src="images/clasico.jpg"    alt="Corte Clásico"  class="reveal" onclick="window.location='galeria.html'">
+        <img src="images/fade-alto.jpg" alt="Fade Alto"       class="reveal reveal-delay-1" onclick="window.location='galeria.html'">
+        <img src="images/texturizado.jpg" alt="Texturizado"    class="reveal reveal-delay-2" onclick="window.location='galeria.html'">
+      </div>
+      <div style="text-align:center;margin-top:2rem">
+        <a href="galeria.html" class="btn btn-outline">Ver Galería Completa &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section reveal">
+    <h2>¿Listo para <span>transformar</span> tu imagen?</h2>
+    <p>Reserva tu cita ahora y recibe atención personalizada de nuestros maestros barberos.</p>
+    <a href="reservas.html" class="btn btn-primary" style="font-size:0.9rem;padding:1rem 2.5rem">Reservar Mi Cita &rarr;</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="images/logo.jpg" alt="Logo">
+      <h3>The Wolves Barber</h3>
+      <p>El santuario de la masculinidad en Bogotá. Donde la navaja encuentra al arte.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <p>📍 Bogotá, Colombia<br>
+      📱 <a href="https://wa.me/573227418794" style="color:var(--gold)">+57 322 741 8794</a><br>
+      🕒 L–S: 9:00am – 8:00pm<br>
+      🕒 Dom: 10:00am – 5:00pm</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 <span>The Wolves Barber</span>. Todos los derechos reservados.</p>
+    <p>Hecho con precisión en Bogotá 🐺</p>
+  </div>
+</footer>
+
+<button id="chat-toggle" title="Soporte Wolves">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+
+<div id="chat-panel">
+  <div class="chat-header">
+    <div class="chat-header-avatar">🐺</div>
+    <div class="chat-header-info">
+      <h4>Soporte Wolves</h4>
+      <p>Asistente disponible 24/7</p>
+    </div>
+    <button class="chat-close" id="chat-close">&times;</button>
+  </div>
+  <div id="chat-messages">
+    <div class="chat-msg bot">¡Hola! Soy Lobo, tu asistente de The Wolves Barber. ¿En qué puedo ayudarte hoy?</div>
+  </div>
+  <div class="chat-quick">
+    <button class="chat-quick-btn">¿Cuáles son los precios?</button>
+    <button class="chat-quick-btn">¿Cómo reservo?</button>
+    <button class="chat-quick-btn">¿Cuáles son los horarios?</button>
+    <button class="chat-quick-btn">Contactar administrador</button>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Escribe tu pregunta...">
+    <button class="chat-send" id="chat-send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  requireAuth();
+  const featured = SERVICES.filter(s => s.cat !== 'Combos' && s.cat !== 'Especiales').slice(0, 3);
+  const grid = document.getElementById('featured-services');
+  if (!grid) return;
+  grid.innerHTML = featured.map(s => `
+    <div class="srv-card reveal" onclick="window.location='reservas.html?service=${s.id}'">
+      <img src="${s.img}" alt="${s.name}">
+      <div class="srv-card-body">
+        <div class="srv-card-cat">${s.cat}</div>
+        <h3 class="srv-card-name">${s.name}</h3>
+        <p class="srv-card-desc">${s.desc}</p>
+        <div class="srv-card-footer">
+          <span class="srv-card-price">${formatCOP(s.price)}</span>
+          <span class="srv-card-dur">${s.dur} min</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  initReveal();
+});
+</script>
+
+<script>
+// Parallax hero
+window.addEventListener('scroll', () => {
+  const bg = document.querySelector('.hero-bg');
+  if (bg) bg.style.transform = 'translateY(' + (window.scrollY * 0.25) + 'px)';
+}, { passive: true });
+
+// Contador animado para stats
+function animateCounters() {
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const text = el.textContent;
+    const num = parseFloat(text.replace(/[^0-9.]/g,''));
+    const suffix = text.replace(/[0-9.]/g,'');
+    if (isNaN(num)) return;
+    let start = 0; const dur = 1500; const step = 16;
+    const inc = num / (dur / step);
+    const timer = setInterval(() => {
+      start += inc;
+      if (start >= num) { el.textContent = text; clearInterval(timer); return; }
+      el.textContent = (Number.isInteger(num) ? Math.floor(start) : start.toFixed(1)) + suffix;
+    }, step);
+  });
+}
+const statsObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { animateCounters(); statsObs.disconnect(); } });
+}, { threshold: 0.3 });
+const statsSection = document.querySelector('.stats-section');
+if (statsSection) statsObs.observe(statsSection);
+</script>
+</body>
+</html>
